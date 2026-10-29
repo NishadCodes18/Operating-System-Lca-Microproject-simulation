@@ -17,7 +17,6 @@
 <body>
 <div class="page">
 
-  <!-- ================= HEADER ================= -->
   <header class="hero">
     <div class="brand">
       <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
@@ -67,7 +66,6 @@
     </aside>
   </header>
 
-  <!-- ================= CONTROLS ================= -->
   <section class="toolbar">
     <div class="controls">
       <button id="btnStart" class="btn btn-blue">
@@ -95,7 +93,6 @@
     </div>
   </section>
 
-  <!-- ================= STATUS BANNER ================= -->
   <div id="banner" class="banner banner-ready">
     <span class="b-led"></span>
     <svg class="b-warn" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 1 21h22z" fill="currentColor"/><path d="M12 9v6M12 17.3v1.4" stroke="#1a0b09" stroke-width="2.2" stroke-linecap="round"/></svg>
@@ -103,7 +100,6 @@
     <span id="bannerText">Press Start to run the simulation.</span>
   </div>
 
-  <!-- ================= STEP TRACKER ================= -->
   <ol class="stepper">
     <li id="step1" class="step"><i>1</i><span>Request</span></li>
     <li id="step2" class="step"><i>2</i><span>Acquire</span></li>
@@ -115,7 +111,6 @@
 
   <main class="grid">
 
-    <!-- ================= FACTORY FLOOR ================= -->
     <section class="panel wide">
       <h2>Factory Floor <small>Live simulation</small></h2>
 
@@ -133,12 +128,10 @@
             <pattern id="pHaz" width="20" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="10" height="8" fill="#ff8a1f"/><rect x="10" width="10" height="8" fill="#161a20"/></pattern>
           </defs>
 
-          <!-- wall + ceiling -->
           <rect width="900" height="262" fill="url(#gWall)"/>
           <rect width="900" height="262" fill="url(#pPanels)"/>
           <rect width="900" height="10" fill="#0c1117"/>
 
-          <!-- ceiling lamps -->
           <polygon points="282,10 318,10 392,262 208,262" fill="url(#gCone)"/>
           <polygon points="432,10 468,10 542,262 358,262" fill="url(#gCone)"/>
           <polygon points="582,10 618,10 692,262 508,262" fill="url(#gCone)"/>
@@ -146,14 +139,12 @@
           <rect x="428" y="10" width="44" height="6" rx="3" fill="#cfe6ff" opacity=".85"/>
           <rect x="578" y="10" width="44" height="6" rx="3" fill="#cfe6ff" opacity=".85"/>
 
-          <!-- overhead pipe -->
           <rect y="70" width="900" height="12" fill="#1a222c"/>
           <rect y="72" width="900" height="3" fill="#fff" opacity=".07"/>
           <rect x="150" y="66" width="10" height="20" rx="2" fill="#2b3644"/>
           <rect x="445" y="66" width="10" height="20" rx="2" fill="#2b3644"/>
           <rect x="740" y="66" width="10" height="20" rx="2" fill="#2b3644"/>
 
-          <!-- control cabinet (left) -->
           <g transform="translate(24,118)">
             <rect width="96" height="144" rx="6" fill="#18202a" stroke="#2f3a47" stroke-width="2"/>
             <rect x="10" y="12" width="76" height="46" rx="3" fill="#080c11" stroke="#2d9cff" stroke-opacity=".6"/>
@@ -167,7 +158,6 @@
             <rect x="10" y="120" width="76" height="6" rx="2" fill="#0e141b"/>
           </g>
 
-          <!-- storage rack (right) -->
           <g transform="translate(780,120)">
             <rect width="100" height="142" rx="4" fill="#161d26" stroke="#2b3644"/>
             <rect x="6" y="48" width="88" height="5" fill="#2f3a47"/>
@@ -180,7 +170,6 @@
             <rect x="54" y="122" width="28" height="20" fill="#8a6a3a" stroke="#5b4222"/>
           </g>
 
-          <!-- warning beacons -->
           <g transform="translate(72,40)">
             <rect x="-13" y="12" width="26" height="9" rx="2" fill="#2b3644"/>
             <circle class="halo" r="26"/>
@@ -192,7 +181,6 @@
             <circle class="lamp" r="11"/>
           </g>
 
-          <!-- floor + conveyor -->
           <rect y="262" width="900" height="78" fill="url(#gFloor)"/>
           <rect y="262" width="900" height="3" fill="#6c7b8d" opacity=".6"/>
           <rect y="332" width="900" height="8" fill="url(#pHaz)" opacity=".9"/>
@@ -205,14 +193,11 @@
             <g class="crate" style="animation-delay:-10.8s"><rect x="0" y="288" width="30" height="16" rx="2" fill="#8a6a3a" stroke="#5b4222"/><rect x="12" y="288" width="5" height="16" fill="#c9a064" opacity=".7"/></g>
           </g>
 
-          <!-- tool shadows -->
           <ellipse cx="395" cy="264" rx="52" ry="6" fill="rgba(0,0,0,.45)"/>
           <ellipse cx="505" cy="264" rx="52" ry="6" fill="rgba(0,0,0,.45)"/>
 
-          <!-- cables (allocation) are added by script.js -->
           <g id="cables"></g>
 
-          <!-- R1: welding station -->
           <g id="toolR1" class="tool" transform="translate(395,215)">
             <ellipse class="lockring" cx="0" cy="0" rx="50" ry="9"/>
             <rect class="ped" x="-42" y="0" width="84" height="47" rx="4"/>
@@ -232,7 +217,6 @@
             </g>
           </g>
 
-          <!-- R2: paint sprayer -->
           <g id="toolR2" class="tool" transform="translate(505,215)">
             <ellipse class="lockring" cx="0" cy="0" rx="50" ry="9"/>
             <rect class="ped" x="-42" y="0" width="84" height="47" rx="4"/>
@@ -252,11 +236,9 @@
             </g>
           </g>
 
-          <!-- robots (arms are drawn by script.js) -->
           <g id="robotP1" class="robot idle"></g>
           <g id="robotP2" class="robot idle"></g>
 
-          <!-- deadlock effects -->
           <rect class="vig" width="900" height="340" fill="url(#gVig)" pointer-events="none"/>
           <g class="alert" transform="translate(450,38)">
             <rect x="-112" y="-21" width="224" height="42" rx="7" fill="#2a0f0c" stroke="#ff4b3a" stroke-width="2"/>
@@ -290,7 +272,6 @@
       <p class="hint">Each robot needs <b>both</b> tools to finish its job. P1 takes R1 then asks for R2. P2 takes R2 then asks for R1. Blue cables = tool allocated. Reaching arm = tool requested.</p>
     </section>
 
-    <!-- ================= RESOURCE ALLOCATION GRAPH ================= -->
     <section class="panel">
       <h2>Resource Allocation Graph</h2>
       <svg id="rag" class="rag" viewBox="0 0 460 340" xmlns="http://www.w3.org/2000/svg">
@@ -350,7 +331,6 @@
       </div>
     </section>
 
-    <!-- ================= FOUR CONDITIONS ================= -->
     <section class="panel">
       <h2>Four Conditions for Deadlock</h2>
       <div class="cond-meter"><div class="meter"><i id="condFill"></i></div><span id="condCount">0 / 4 conditions met</span></div>
@@ -385,13 +365,11 @@
       </div>
     </section>
 
-    <!-- ================= EVENT LOG ================= -->
     <section class="panel">
       <h2>Event Log</h2>
       <ul id="log" class="log"></ul>
     </section>
 
-    <!-- ================= RECOVERY ================= -->
     <section class="panel">
       <h2>Recovery Method</h2>
       <div id="recoveryNote" class="recovery-note"></div>

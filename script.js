@@ -1,14 +1,10 @@
 // Deadlock Simulation - Automated Factory Resource Management
 // Created by Nishad Patil | Int. B.Tech TY CSE B | Roll No. 41 | PRN 1262241550 | Subject: Operating System
-// Plain JavaScript, no libraries. Open index.html directly in Chrome.
 
-var STEP_DELAY = 2000; // milliseconds between simulation steps
+var STEP_DELAY = 2000;
 
-// ---------- System state ----------
 var procs, owner, phase, running, queue, idx, timer, clock, resultText;
-// phase: 'idle' | 'run' | 'deadlock' | 'recover' | 'done'
 
-// Resource Allocation Graph node centres (match the SVG in index.html)
 var POS = {
   P1: { x: 100, y: 92 },
   R2: { x: 360, y: 92 },
@@ -16,7 +12,6 @@ var POS = {
   R1: { x: 100, y: 248 }
 };
 
-// Text shown for each recovery method
 var NOTES = {
   auto: 'Auto: the system picks the cheapest victim (the process that has done less work; if equal, P2) and terminates it. This breaks <b>Circular Wait</b>.',
   killP1: 'Terminate P1: P1 is killed and releases R1. P2 then gets R1 and finishes. This breaks <b>Circular Wait</b>.',
@@ -25,7 +20,13 @@ var NOTES = {
   preemptP2: 'Preempt R2 from P2: R2 is forcibly taken from P2 (P2 is rolled back) and given to P1. P1 finishes, then P2 restarts and also finishes. This breaks <b>No Preemption</b>.'
 };
 
-function other(p) { return p === 'P1' ? 'P2' : 'P1'; }
+function $(id) {
+  return document.getElementById(id);
+}
+
+function other(p) {
+  return p === 'P1' ? 'P2' : 'P1';
+}
 
 function resetState() {
   procs = {
@@ -39,23 +40,25 @@ function resetState() {
   idx = 0;
   clock = 0;
   resultText = '';
-  if (timer) { clearInterval(timer); timer = null; }
+  if (timer) {
+    clearInterval(timer);
+    timer = null;
+  }
 }
 
-// ---------- Core OS-style operations ----------
 function tryAcquire(p) {
   var proc = procs[p];
   var r = proc.waiting;
   if (!r) return;
   if (owner[r] === null) {
-    owner[r] = p;                 // grant resource
+    owner[r] = p;
     proc.holds.push(r);
     proc.waiting = null;
     proc.status = 'running';
     proc.text = 'RUNNING (holds ' + proc.holds.join(', ') + ')';
     log(p + ' acquired ' + r + '.', 'act');
   } else {
-    proc.status = 'blocked';      // resource busy -> block
+    proc.status = 'blocked';
     proc.text = 'BLOCKED (waiting for ' + r + ')';
     log(p + ' requested ' + r + ' but it is held by ' + owner[r] + '. ' + p + ' is BLOCKED.', '');
   }
@@ -68,8 +71,6 @@ function release(p, r) {
   log(p + ' released ' + r + '.', 'ok');
 }
 
-// Deadlock detection: build wait-for graph (P -> Q if P waits for a resource held by Q)
-// and look for a cycle.
 function findCycle() {
   var names = ['P1', 'P2'];
   var waitsFor = {};
@@ -84,12 +85,11 @@ function findCycle() {
       seen.push(cur);
       cur = waitsFor[cur];
     }
-    if (cur && seen.indexOf(cur) !== -1) return seen; // cycle found
+    if (cur && seen.indexOf(cur) !== -1) return seen;
   }
   return null;
 }
 
-// ---------- Simulation steps (normal run until deadlock) ----------
 var MAIN_STEPS = [
   function () {
     phase = 'run';
@@ -123,22 +123,19 @@ var MAIN_STEPS = [
   }
 ];
 
-// ---------- Recovery methods ----------
-
-// Method 1: terminate victim v, release its resource, let the other process finish.
 function buildTerminate(v) {
   var o = other(v);
-  var res = procs[v].holds[0];   // the resource the victim holds
+  var res = procs[v].holds[0];
   return [
     function () {
       log('Recovery: terminate ' + v + ' (victim).', 'act');
       procs[v].status = 'terminated';
       procs[v].text = 'TERMINATED';
-      procs[v].waiting = null;   // its pending request is cancelled
+      procs[v].waiting = null;
       procs[v].progress = 0;
     },
     function () {
-      release(v, res);           // victim releases its resource
+      release(v, res);
     },
     function () {
       log(res + ' is free now. ' + o + ' can get it.', '');
@@ -161,11 +158,10 @@ function buildTerminate(v) {
   ];
 }
 
-// Method 2: preempt the resource held by v (roll v back), give it to the other process.
 function buildPreempt(v) {
   var o = other(v);
-  var held = procs[v].holds[0];  // taken away from v
-  var want = procs[v].waiting;   // what v was waiting for (held by o)
+  var held = procs[v].holds[0];
+  var want = procs[v].waiting;
   return [
     function () {
       log('Recovery: preempt ' + held + ' from ' + v + ' (forced release). ' + v + ' is rolled back.', 'act');
@@ -219,7 +215,6 @@ function buildPreempt(v) {
   ];
 }
 
-// Pick the method from the dropdown (Auto chooses a victim by cost).
 function chooseMethod() {
   var m = $('recoverySelect').value;
   if (m !== 'auto') return m;
@@ -235,37 +230,47 @@ function chooseMethod() {
   return 'killP2';
 }
 
-// ---------- Timer control ----------
 function tick() {
-  if (idx >= queue.length) { stopTimer(); render(); return; }
+  if (idx >= queue.length) {
+    stopTimer();
+    render();
+    return;
+  }
   clock++;
   queue[idx++]();
   if (idx >= queue.length || phase === 'deadlock' || phase === 'done') {
-    // end of this sequence
     stopTimer();
   }
   render();
 }
 
 function stopTimer() {
-  if (timer) { clearInterval(timer); timer = null; }
+  if (timer) {
+    clearInterval(timer);
+    timer = null;
+  }
   running = false;
 }
 
 function startTimer() {
   if (running) return;
   running = true;
-  tick();                                   // run first step immediately
+  tick();
   if (running) timer = setInterval(tick, STEP_DELAY);
 }
 
-// ---------- Buttons ----------
 function onStart() {
   if (phase === 'idle' || phase === 'run' || phase === 'recover') startTimer();
 }
+
 function onPause() {
-  if (running) { stopTimer(); log('Simulation paused.', ''); render(); }
+  if (running) {
+    stopTimer();
+    log('Simulation paused.', '');
+    render();
+  }
 }
+
 function onRecover() {
   if (phase !== 'deadlock') return;
   var m = chooseMethod();
@@ -277,17 +282,18 @@ function onRecover() {
   idx = 0;
   startTimer();
 }
+
 function onReset() {
   resetState();
   document.getElementById('log').innerHTML = '';
   log('System reset. Ready.', '');
   render();
 }
+
 function updateNote() {
   $('recoveryNote').innerHTML = NOTES[$('recoverySelect').value];
 }
 
-// ---------- Log ----------
 function log(msg, cls) {
   var ul = document.getElementById('log');
   var li = document.createElement('li');
@@ -297,17 +303,15 @@ function log(msg, cls) {
   ul.scrollTop = ul.scrollHeight;
 }
 
-// =====================================================================
-//  FACTORY SCENE  (animated robot arms, cables, tool effects)
-// =====================================================================
 var SVGNS = 'http://www.w3.org/2000/svg';
-var L1 = 170, L2 = 170;                 // arm segment lengths
-var animT = 0, lastFrame = 0;           // animation clock
+var L1 = 170, L2 = 170;
+var animT = 0, lastFrame = 0;
 
 var ROBOT = {
   P1: { bx: 200, sy: 218, dir: 1,  cur: { x: 380, y: 76 }, open: 0.3, el: {} },
   P2: { bx: 700, sy: 218, dir: -1, cur: { x: 520, y: 76 }, open: 0.3, el: {} }
 };
+
 var TOOL = {
   R1: { x: 395, grip: { x: 395, y: 164 } },
   R2: { x: 505, grip: { x: 505, y: 160 } }
@@ -321,7 +325,6 @@ function se(name, attrs, parent) {
 }
 
 function buildScene() {
-  // robots
   ['P1', 'P2'].forEach(function (p) {
     var R = ROBOT[p], g = $('robot' + p), bx = R.bx, E = R.el;
     se('ellipse', { cx: bx, cy: 264, rx: 54, ry: 6, fill: 'rgba(0,0,0,.45)' }, g);
@@ -345,7 +348,6 @@ function buildScene() {
     E.claw = se('path', { 'class': 'claw' }, g);
     E.wrist = se('circle', { r: 8, 'class': 'joint' }, g);
 
-    // "terminated" marks
     var x = se('g', { 'class': 'xmark' }, g);
     se('line', { x1: bx - 24, y1: 196, x2: bx + 24, y2: 248 }, x);
     se('line', { x1: bx + 24, y1: 196, x2: bx - 24, y2: 248 }, x);
@@ -358,7 +360,6 @@ function buildScene() {
     R.cur.y = R.sy - 150;
   });
 
-  // cables: one per (process, resource) pair, shown when that process owns that resource
   var cg = $('cables');
   ['P1', 'P2'].forEach(function (p) {
     ['R1', 'R2'].forEach(function (r) {
@@ -373,7 +374,6 @@ function buildScene() {
   });
 }
 
-// where should a robot's gripper be right now?
 function armTarget(p, t) {
   var R = ROBOT[p], pr = procs[p];
   var rest = { x: R.bx + R.dir * 180, y: R.sy - 150, open: 0.3 };
@@ -384,7 +384,6 @@ function armTarget(p, t) {
   if (pr.waiting) {
     var g = TOOL[pr.waiting].grip;
     if (pr.status === 'blocked') {
-      // stretches towards the tool but cannot get it: trembles in place
       return {
         x: g.x - R.dir * 45 + Math.sin(t / 70) * 3,
         y: g.y - 8 + Math.cos(t / 90) * 3,
@@ -400,7 +399,6 @@ function armTarget(p, t) {
   return rest;
 }
 
-// two-link inverse kinematics (elbow always bends upwards)
 function solveArm(sx, sy, tx, ty, dir) {
   var dx = tx - sx, dy = ty - sy;
   var d = Math.sqrt(dx * dx + dy * dy);
@@ -434,7 +432,7 @@ function drawArm(R) {
   E.elbow.setAttribute('cx', a.ex.toFixed(1)); E.elbow.setAttribute('cy', a.ey.toFixed(1));
   E.elbolt.setAttribute('cx', a.ex.toFixed(1)); E.elbolt.setAttribute('cy', a.ey.toFixed(1));
   E.wrist.setAttribute('cx', a.wx.toFixed(1)); E.wrist.setAttribute('cy', a.wy.toFixed(1));
-  // claw: two prongs pointing along the forearm
+
   var th = Math.atan2(a.wy - a.ey, a.wx - a.ex);
   var a1 = th - R.open, a2 = th + R.open, len = 26;
   E.claw.setAttribute('d',
@@ -447,8 +445,8 @@ function drawArm(R) {
 function frame(now) {
   var dt = lastFrame ? Math.min(now - lastFrame, 50) : 16;
   lastFrame = now;
-  if (running || phase === 'deadlock') animT += dt;   // arms keep trembling while deadlocked
-  var k = 1 - Math.exp(-dt / 170);                    // easing factor
+  if (running || phase === 'deadlock') animT += dt;
+  var k = 1 - Math.exp(-dt / 170);
   ['P1', 'P2'].forEach(function (p) {
     var R = ROBOT[p], tg = armTarget(p, animT);
     R.cur.x += (tg.x - R.cur.x) * k;
@@ -484,9 +482,6 @@ function renderScene() {
   });
 }
 
-// ---------- Rendering ----------
-function $(id) { return document.getElementById(id); }
-
 function render() {
   renderProcesses();
   renderResources();
@@ -515,7 +510,6 @@ function renderResources() {
   });
 }
 
-// --- Resource Allocation Graph ---
 function cutFor(n, dx, dy) {
   if (n.charAt(0) === 'R') return Math.abs(dx) > Math.abs(dy) ? 38 : 34;
   return 38;
@@ -640,7 +634,6 @@ function renderButtons() {
   $('recoverySelect').disabled = (phase === 'recover' || phase === 'done');
 }
 
-// ---------- Init ----------
 $('btnStart').addEventListener('click', onStart);
 $('btnPause').addEventListener('click', onPause);
 $('btnRecover').addEventListener('click', onRecover);
