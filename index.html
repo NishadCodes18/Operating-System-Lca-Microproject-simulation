@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  Deadlock Simulation - Automated Factory Resource Management
+  Railway Deadlock Simulation - Transportation & Rail Systems
   Created by : Nishad Patil
   Class      : Int. B.Tech, TY CSE B
   Roll No.   : 41
@@ -11,43 +11,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Deadlock Simulation | Automated Factory | Nishad Patil</title>
+  <title>Railway Deadlock Simulation | Transportation &amp; Rail Systems | Nishad Patil</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="page">
 
+  <!-- ================= HEADER ================= -->
   <header class="hero">
     <div class="brand">
       <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
-        <g class="logo-gear">
-          <circle cx="32" cy="32" r="14" fill="none" stroke="#2d9cff" stroke-width="6"/>
-          <g stroke="#2d9cff" stroke-width="7" stroke-linecap="round">
-            <line x1="32" y1="5" x2="32" y2="13"/>
-            <line x1="32" y1="5" x2="32" y2="13" transform="rotate(45 32 32)"/>
-            <line x1="32" y1="5" x2="32" y2="13" transform="rotate(90 32 32)"/>
-            <line x1="32" y1="5" x2="32" y2="13" transform="rotate(135 32 32)"/>
-            <line x1="32" y1="5" x2="32" y2="13" transform="rotate(180 32 32)"/>
-            <line x1="32" y1="5" x2="32" y2="13" transform="rotate(225 32 32)"/>
-            <line x1="32" y1="5" x2="32" y2="13" transform="rotate(270 32 32)"/>
-            <line x1="32" y1="5" x2="32" y2="13" transform="rotate(315 32 32)"/>
-          </g>
+        <circle cx="32" cy="32" r="30" fill="#0f1620" stroke="#2b3644" stroke-width="2"/>
+        <path d="M20 57 L29 15 M44 57 L35 15" stroke="#2d9cff" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <g stroke="#ff8a1f" stroke-width="3" stroke-linecap="round">
+          <line x1="18" y1="51" x2="46" y2="51"/>
+          <line x1="21.5" y1="40" x2="42.5" y2="40"/>
+          <line x1="24.5" y1="30" x2="39.5" y2="30"/>
+          <line x1="27" y1="22" x2="37" y2="22"/>
         </g>
-        <g class="logo-gear2">
-          <circle cx="50" cy="50" r="5" fill="none" stroke="#ff8a1f" stroke-width="3.5"/>
-          <g stroke="#ff8a1f" stroke-width="4" stroke-linecap="round">
-            <line x1="50" y1="41" x2="50" y2="44"/>
-            <line x1="50" y1="41" x2="50" y2="44" transform="rotate(60 50 50)"/>
-            <line x1="50" y1="41" x2="50" y2="44" transform="rotate(120 50 50)"/>
-            <line x1="50" y1="41" x2="50" y2="44" transform="rotate(180 50 50)"/>
-            <line x1="50" y1="41" x2="50" y2="44" transform="rotate(240 50 50)"/>
-            <line x1="50" y1="41" x2="50" y2="44" transform="rotate(300 50 50)"/>
-          </g>
-        </g>
+        <circle class="logo-lamp" cx="32" cy="9" r="4.5"/>
       </svg>
       <div>
-        <h1>Deadlock Simulation</h1>
-        <p class="subtitle">Automated Factory Resource Management</p>
+        <h1>Railway Deadlock Simulation</h1>
+        <p class="subtitle">Transportation &amp; Rail Systems &middot; Single-Track Block Signalling</p>
       </div>
     </div>
 
@@ -61,11 +47,13 @@
           <div><span>Roll No.</span>41</div>
           <div><span>PRN No.</span>1262241550</div>
           <div><span>Subject</span>Operating System</div>
+          <div class="full"><span>Industrial application</span>Transportation &amp; Rail Systems</div>
         </div>
       </div>
     </aside>
   </header>
 
+  <!-- ================= CONTROLS ================= -->
   <section class="toolbar">
     <div class="controls">
       <button id="btnStart" class="btn btn-blue">
@@ -81,11 +69,11 @@
     <div class="recover-box">
       <label for="recoverySelect">Recovery method</label>
       <select id="recoverySelect" class="select" title="Choose the recovery method">
-        <option value="auto">Auto (system chooses)</option>
-        <option value="killP1">Terminate P1</option>
-        <option value="killP2">Terminate P2</option>
-        <option value="preemptP1">Preempt R1 from P1</option>
-        <option value="preemptP2">Preempt R2 from P2</option>
+        <option value="auto">Auto (dispatcher chooses)</option>
+        <option value="killP1">Terminate P1 &middot; Express 101</option>
+        <option value="killP2">Terminate P2 &middot; Freight 202</option>
+        <option value="preemptP1">Preempt Block A from P1</option>
+        <option value="preemptP2">Preempt Block B from P2</option>
       </select>
       <button id="btnRecover" class="btn btn-orange">
         <svg class="ico" viewBox="0 0 16 16"><path d="M9.5 1L3 9.2h4L6 15l7-8.4H9z" fill="currentColor"/></svg>Recover
@@ -93,6 +81,7 @@
     </div>
   </section>
 
+  <!-- ================= STATUS BANNER ================= -->
   <div id="banner" class="banner banner-ready">
     <span class="b-led"></span>
     <svg class="b-warn" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 1 21h22z" fill="currentColor"/><path d="M12 9v6M12 17.3v1.4" stroke="#1a0b09" stroke-width="2.2" stroke-linecap="round"/></svg>
@@ -100,237 +89,319 @@
     <span id="bannerText">Press Start to run the simulation.</span>
   </div>
 
+  <!-- ================= STEP TRACKER ================= -->
   <ol class="stepper">
     <li id="step1" class="step"><i>1</i><span>Request</span></li>
-    <li id="step2" class="step"><i>2</i><span>Acquire</span></li>
-    <li id="step3" class="step"><i>3</i><span>Work</span></li>
-    <li id="step4" class="step"><i>4</i><span>Cross-request</span></li>
+    <li id="step2" class="step"><i>2</i><span>Enter block</span></li>
+    <li id="step3" class="step"><i>3</i><span>Run</span></li>
+    <li id="step4" class="step"><i>4</i><span>Request next</span></li>
     <li id="step5" class="step"><i>5</i><span>Deadlock</span></li>
     <li id="step6" class="step"><i>6</i><span>Recovery</span></li>
   </ol>
 
   <main class="grid">
 
+    <!-- ================= RAILWAY LINE ================= -->
     <section class="panel wide">
-      <h2>Factory Floor <small>Live simulation</small></h2>
+      <h2>Railway Line <small>Live simulation &middot; one single track, two signal blocks</small></h2>
 
       <div class="scene-wrap">
-        <svg id="scene" class="scene ph-idle" viewBox="0 0 900 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animated factory with two robots and two tools">
+        <svg id="scene" class="scene ph-idle" viewBox="0 0 1400 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Night railway scene with two trains on a single track divided into two signal blocks">
           <defs>
-            <linearGradient id="gWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f2a37"/><stop offset="1" stop-color="#111720"/></linearGradient>
-            <linearGradient id="gFloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2c3541"/><stop offset="1" stop-color="#141a21"/></linearGradient>
-            <linearGradient id="gMetal" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3a4554"/><stop offset=".5" stop-color="#7a8aa0"/><stop offset="1" stop-color="#36404e"/></linearGradient>
-            <linearGradient id="gPed" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#46526a"/><stop offset="1" stop-color="#232a34"/></linearGradient>
-            <linearGradient id="gCone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8cc4ff" stop-opacity=".17"/><stop offset="1" stop-color="#8cc4ff" stop-opacity="0"/></linearGradient>
+            <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#040712"/><stop offset=".45" stop-color="#0c1630"/><stop offset=".8" stop-color="#2a2243"/><stop offset="1" stop-color="#703c22"/></linearGradient>
+            <linearGradient id="gDawn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffb066" stop-opacity="0"/><stop offset=".55" stop-color="#ff9a55" stop-opacity=".18"/><stop offset="1" stop-color="#ffc27a" stop-opacity=".6"/></linearGradient>
+            <radialGradient id="gHorizon" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ff9a4a" stop-opacity=".5"/><stop offset="1" stop-color="#ff9a4a" stop-opacity="0"/></radialGradient>
+            <radialGradient id="gMoonHalo"><stop offset="0" stop-color="#9fc7ff" stop-opacity=".4"/><stop offset="1" stop-color="#9fc7ff" stop-opacity="0"/></radialGradient>
+            <linearGradient id="gGround" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a2029"/><stop offset=".4" stop-color="#10151c"/><stop offset="1" stop-color="#080b10"/></linearGradient>
+            <linearGradient id="gBallast" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#454b54"/><stop offset="1" stop-color="#1c2027"/></linearGradient>
+            <linearGradient id="gRail" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e3eaf4"/><stop offset=".4" stop-color="#8e9db2"/><stop offset="1" stop-color="#3a4452"/></linearGradient>
+            <linearGradient id="gPlat" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b4757"/><stop offset="1" stop-color="#1d2530"/></linearGradient>
+            <linearGradient id="gFog" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b0f14" stop-opacity="0"/><stop offset="1" stop-color="#0b0f14" stop-opacity=".85"/></linearGradient>
+
+            <linearGradient id="gExp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6f9ff"/><stop offset=".55" stop-color="#c6d2e2"/><stop offset="1" stop-color="#7f90a7"/></linearGradient>
+            <linearGradient id="gGlass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1f5a94"/><stop offset=".5" stop-color="#0b2038"/><stop offset="1" stop-color="#143a60"/></linearGradient>
+            <linearGradient id="gWin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff1c2"/><stop offset="1" stop-color="#ffc561"/></linearGradient>
+            <linearGradient id="gDiesel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a6296"/><stop offset=".6" stop-color="#1d3a60"/><stop offset="1" stop-color="#0d1c32"/></linearGradient>
+            <linearGradient id="gCab" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffb35c"/><stop offset="1" stop-color="#d9640a"/></linearGradient>
+            <linearGradient id="gTank" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef3fa"/><stop offset=".35" stop-color="#a9b6c8"/><stop offset="1" stop-color="#4a5668"/></linearGradient>
+            <linearGradient id="gBeam" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff2c4" stop-opacity=".6"/><stop offset="1" stop-color="#fff2c4" stop-opacity="0"/></linearGradient>
+            <linearGradient id="gHallW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd58a"/><stop offset="1" stop-color="#b8661f"/></linearGradient>
+            <linearGradient id="gGlassE" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b82c4"/><stop offset="1" stop-color="#0f2e4d"/></linearGradient>
+
+            <radialGradient id="gHaloW"><stop offset="0" stop-color="#fff8e0" stop-opacity=".95"/><stop offset=".35" stop-color="#ffe9a8" stop-opacity=".35"/><stop offset="1" stop-color="#ffe9a8" stop-opacity="0"/></radialGradient>
+            <radialGradient id="gHaloO"><stop offset="0" stop-color="#ffb35c" stop-opacity=".8"/><stop offset=".4" stop-color="#ff9a3a" stop-opacity=".25"/><stop offset="1" stop-color="#ff9a3a" stop-opacity="0"/></radialGradient>
+            <radialGradient id="gHaloB"><stop offset="0" stop-color="#9fd0ff" stop-opacity=".8"/><stop offset=".4" stop-color="#5aaaf5" stop-opacity=".25"/><stop offset="1" stop-color="#5aaaf5" stop-opacity="0"/></radialGradient>
+            <radialGradient id="gHaloR"><stop offset="0" stop-color="#ff4a38" stop-opacity=".95"/><stop offset=".4" stop-color="#ff3b2a" stop-opacity=".35"/><stop offset="1" stop-color="#ff3b2a" stop-opacity="0"/></radialGradient>
+            <radialGradient id="gHaloA"><stop offset="0" stop-color="#ffc040" stop-opacity=".95"/><stop offset=".4" stop-color="#ffb020" stop-opacity=".35"/><stop offset="1" stop-color="#ffb020" stop-opacity="0"/></radialGradient>
+            <radialGradient id="gHaloG"><stop offset="0" stop-color="#46ff9a" stop-opacity=".95"/><stop offset=".4" stop-color="#2dff8a" stop-opacity=".35"/><stop offset="1" stop-color="#2dff8a" stop-opacity="0"/></radialGradient>
             <radialGradient id="gVig" cx="50%" cy="50%" r="72%"><stop offset=".5" stop-color="#ff2a1a" stop-opacity="0"/><stop offset="1" stop-color="#ff2a1a" stop-opacity=".6"/></radialGradient>
-            <filter id="glow" filterUnits="userSpaceOnUse" x="-300" y="-300" width="1500" height="900"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-            <pattern id="pPanels" width="90" height="262" patternUnits="userSpaceOnUse"><path d="M0 0V262" stroke="#fff" stroke-opacity=".05" stroke-width="2"/><path d="M0 131H90" stroke="#fff" stroke-opacity=".035"/></pattern>
+
+            <linearGradient id="gReflFade" gradientUnits="userSpaceOnUse" x1="0" y1="334" x2="0" y2="490"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+            <mask id="mRefl" maskUnits="userSpaceOnUse" x="0" y="334" width="1400" height="186"><rect x="0" y="334" width="1400" height="186" fill="url(#gReflFade)"/></mask>
+            <mask id="mMoon" maskUnits="userSpaceOnUse" x="1100" y="20" width="200" height="150"><rect x="1100" y="20" width="200" height="150" fill="#fff"/><circle cx="1203" cy="84" r="22" fill="#000"/></mask>
+
+            <pattern id="pSleeper" width="16" height="12" patternUnits="userSpaceOnUse"><rect x="3" y="0" width="9" height="12" fill="#4a3b2e"/><rect x="3" y="0" width="9" height="2" fill="#6e5841"/></pattern>
+            <pattern id="pGravel" width="22" height="14" patternUnits="userSpaceOnUse"><circle cx="4" cy="3" r="1.4" fill="#5a616b"/><circle cx="13" cy="8" r="1.6" fill="#4a5059"/><circle cx="18" cy="2" r="1" fill="#6b727c"/><circle cx="8" cy="11" r="1.2" fill="#3c424a"/></pattern>
             <pattern id="pHaz" width="20" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="10" height="8" fill="#ff8a1f"/><rect x="10" width="10" height="8" fill="#161a20"/></pattern>
           </defs>
 
-          <rect width="900" height="262" fill="url(#gWall)"/>
-          <rect width="900" height="262" fill="url(#pPanels)"/>
-          <rect width="900" height="10" fill="#0c1117"/>
+          <!-- ============ SKY & BACKDROP ============ -->
+          <rect width="1400" height="336" fill="url(#gSky)"/>
+          <ellipse cx="700" cy="322" rx="780" ry="120" fill="url(#gHorizon)"/>
+          <g id="stars"></g>
+          <g class="moon">
+            <circle cx="1190" cy="92" r="95" fill="url(#gMoonHalo)"/>
+            <g mask="url(#mMoon)"><circle cx="1190" cy="92" r="27" fill="#e2eeff"/></g>
+          </g>
+          <g class="clouds">
+            <g class="cloud c1"><ellipse cx="180" cy="70" rx="120" ry="14"/><ellipse cx="230" cy="62" rx="80" ry="12"/></g>
+            <g class="cloud c2"><ellipse cx="640" cy="120" rx="140" ry="12"/><ellipse cx="600" cy="112" rx="90" ry="11"/></g>
+            <g class="cloud c3"><ellipse cx="980" cy="52" rx="110" ry="11"/><ellipse cx="1030" cy="46" rx="70" ry="9"/></g>
+          </g>
+          <path d="M0,300 L0,262 Q120,232 260,256 T520,248 T800,262 T1100,242 T1400,256 L1400,336 L0,336Z" fill="#0a1120"/>
+          <g id="sky1"></g>
+          <g id="sky2"></g>
 
-          <polygon points="282,10 318,10 392,262 208,262" fill="url(#gCone)"/>
-          <polygon points="432,10 468,10 542,262 358,262" fill="url(#gCone)"/>
-          <polygon points="582,10 618,10 692,262 508,262" fill="url(#gCone)"/>
-          <rect x="278" y="10" width="44" height="6" rx="3" fill="#cfe6ff" opacity=".85"/>
-          <rect x="428" y="10" width="44" height="6" rx="3" fill="#cfe6ff" opacity=".85"/>
-          <rect x="578" y="10" width="44" height="6" rx="3" fill="#cfe6ff" opacity=".85"/>
-
-          <rect y="70" width="900" height="12" fill="#1a222c"/>
-          <rect y="72" width="900" height="3" fill="#fff" opacity=".07"/>
-          <rect x="150" y="66" width="10" height="20" rx="2" fill="#2b3644"/>
-          <rect x="445" y="66" width="10" height="20" rx="2" fill="#2b3644"/>
-          <rect x="740" y="66" width="10" height="20" rx="2" fill="#2b3644"/>
-
-          <g transform="translate(24,118)">
-            <rect width="96" height="144" rx="6" fill="#18202a" stroke="#2f3a47" stroke-width="2"/>
-            <rect x="10" y="12" width="76" height="46" rx="3" fill="#080c11" stroke="#2d9cff" stroke-opacity=".6"/>
-            <text x="48" y="31" text-anchor="middle" class="scr-t">LINE A</text>
-            <text id="cabText" x="48" y="48" text-anchor="middle" class="scr-s">STANDBY</text>
-            <circle class="led l1" cx="22" cy="76" r="4.5"/>
-            <circle class="led l2" cx="48" cy="76" r="4.5"/>
-            <circle class="led l3" cx="74" cy="76" r="4.5"/>
-            <rect x="10" y="92" width="76" height="6" rx="2" fill="#0e141b"/>
-            <rect x="10" y="106" width="76" height="6" rx="2" fill="#0e141b"/>
-            <rect x="10" y="120" width="76" height="6" rx="2" fill="#0e141b"/>
+          <!-- elevated road with moving traffic -->
+          <g id="overpass">
+            <rect x="0" y="262" width="1400" height="7" fill="#121a28"/>
+            <rect x="0" y="259" width="1400" height="2" fill="#2a3648"/>
+            <g id="pillars"></g>
+            <g class="traffic t-right"><circle cx="40" cy="266" r="2.2" fill="#fff4c9"/><circle cx="260" cy="266" r="2.2" fill="#fff4c9"/><circle cx="600" cy="266" r="2.2" fill="#fff4c9"/><circle cx="940" cy="266" r="2.2" fill="#fff4c9"/><circle cx="1180" cy="266" r="2.2" fill="#fff4c9"/></g>
+            <g class="traffic t-left"><circle cx="120" cy="263" r="2" fill="#ff5a48"/><circle cx="420" cy="263" r="2" fill="#ff5a48"/><circle cx="760" cy="263" r="2" fill="#ff5a48"/><circle cx="1060" cy="263" r="2" fill="#ff5a48"/><circle cx="1320" cy="263" r="2" fill="#ff5a48"/></g>
           </g>
 
-          <g transform="translate(780,120)">
-            <rect width="100" height="142" rx="4" fill="#161d26" stroke="#2b3644"/>
-            <rect x="6" y="48" width="88" height="5" fill="#2f3a47"/>
-            <rect x="6" y="98" width="88" height="5" fill="#2f3a47"/>
-            <rect x="12" y="26" width="28" height="22" fill="#9a7440" stroke="#5b4222"/>
-            <rect x="46" y="32" width="24" height="16" fill="#8a6a3a" stroke="#5b4222"/>
-            <rect x="14" y="76" width="26" height="22" fill="#8a6a3a" stroke="#5b4222"/>
-            <rect x="48" y="70" width="32" height="28" fill="#9a7440" stroke="#5b4222"/>
-            <rect x="12" y="116" width="34" height="26" fill="#9a7440" stroke="#5b4222"/>
-            <rect x="54" y="122" width="28" height="20" fill="#8a6a3a" stroke="#5b4222"/>
-          </g>
-
-          <g transform="translate(72,40)">
-            <rect x="-13" y="12" width="26" height="9" rx="2" fill="#2b3644"/>
-            <circle class="halo" r="26"/>
-            <circle class="lamp" r="11"/>
-          </g>
-          <g transform="translate(828,40)">
-            <rect x="-13" y="12" width="26" height="9" rx="2" fill="#2b3644"/>
-            <circle class="halo" r="26"/>
-            <circle class="lamp" r="11"/>
-          </g>
-
-          <rect y="262" width="900" height="78" fill="url(#gFloor)"/>
-          <rect y="262" width="900" height="3" fill="#6c7b8d" opacity=".6"/>
-          <rect y="332" width="900" height="8" fill="url(#pHaz)" opacity=".9"/>
-          <rect x="0" y="304" width="900" height="26" fill="#0e1218" stroke="#2f3a47"/>
-          <line class="belt-line" x1="-20" x2="920" y1="317" y2="317"/>
-          <g>
-            <g class="crate" style="animation-delay:0s"><rect x="0" y="286" width="34" height="18" rx="2" fill="#9a7440" stroke="#5b4222"/><rect x="14" y="286" width="6" height="18" fill="#c9a064" opacity=".7"/></g>
-            <g class="crate" style="animation-delay:-3.6s"><rect x="0" y="290" width="26" height="14" rx="2" fill="#8a6a3a" stroke="#5b4222"/><rect x="10" y="290" width="5" height="14" fill="#c9a064" opacity=".7"/></g>
-            <g class="crate" style="animation-delay:-7.2s"><rect x="0" y="284" width="38" height="20" rx="2" fill="#9a7440" stroke="#5b4222"/><rect x="16" y="284" width="6" height="20" fill="#c9a064" opacity=".7"/></g>
-            <g class="crate" style="animation-delay:-10.8s"><rect x="0" y="288" width="30" height="16" rx="2" fill="#8a6a3a" stroke="#5b4222"/><rect x="12" y="288" width="5" height="16" fill="#c9a064" opacity=".7"/></g>
-          </g>
-
-          <ellipse cx="395" cy="264" rx="52" ry="6" fill="rgba(0,0,0,.45)"/>
-          <ellipse cx="505" cy="264" rx="52" ry="6" fill="rgba(0,0,0,.45)"/>
-
-          <g id="cables"></g>
-
-          <g id="toolR1" class="tool" transform="translate(395,215)">
-            <ellipse class="lockring" cx="0" cy="0" rx="50" ry="9"/>
-            <rect class="ped" x="-42" y="0" width="84" height="47" rx="4"/>
-            <rect x="-42" y="0" width="84" height="5" rx="2" fill="#7a8aa0" opacity=".5"/>
-            <text class="plate-name" x="0" y="21" text-anchor="middle">R1 &#183; WELDER</text>
-            <text id="plateR1" class="plate-stat free" x="0" y="39" text-anchor="middle">FREE</text>
-            <rect x="-52" y="-6" width="40" height="6" rx="1" fill="#586578"/>
-            <line class="seam" x1="-46" y1="-6" x2="-18" y2="-6"/>
-            <rect x="-6" y="-58" width="12" height="58" fill="url(#gMetal)" stroke="#1a2028"/>
-            <rect x="-36" y="-68" width="50" height="16" rx="4" fill="url(#gMetal)" stroke="#1a2028"/>
-            <polygon points="-36,-54 -22,-54 -26,-36 -33,-36" fill="#c8d2de" stroke="#1a2028"/>
-            <circle cx="6" cy="-60" r="3" fill="#ff8a1f"/>
-            <circle class="tip" cx="-30" cy="-33" r="5"/>
-            <g transform="translate(-30,-33)">
-              <circle class="spark s1" r="2"/><circle class="spark s2" r="2"/><circle class="spark s3" r="1.6"/>
-              <circle class="spark s4" r="2"/><circle class="spark s5" r="1.6"/><circle class="spark s6" r="2"/>
+          <!-- ============ WEST CENTRAL (left station) ============ -->
+          <g id="stW">
+            <path d="M6,152 L134,112 L262,152Z" fill="#0e1520" stroke="#2b3644" stroke-width="2"/>
+            <rect x="14" y="152" width="240" height="162" fill="#19212e" stroke="#2b3644" stroke-width="2"/>
+            <rect x="14" y="152" width="240" height="6" fill="#0b1018"/>
+            <rect x="52" y="124" width="164" height="24" rx="3" fill="#080c12" stroke="#ff8a1f" stroke-width="2"/>
+            <text x="134" y="142" text-anchor="middle" class="sign-t sign-o">WEST CENTRAL</text>
+            <rect x="30" y="166" width="178" height="38" rx="3" fill="#05080d" stroke="#3a4452"/>
+            <text id="dbWt1" x="40" y="182" class="db-t">101 EXPRESS &#183; EASTBOUND</text>
+            <text id="dbWt2" x="40" y="198" class="db-s">ON TIME</text>
+            <circle cx="230" cy="186" r="15" fill="#0a0f16" stroke="#ffb35c" stroke-width="2"/>
+            <line id="clockWh" x1="230" y1="186" x2="230" y2="177" class="hand"/>
+            <line id="clockWm" x1="230" y1="186" x2="230" y2="173" class="hand thin"/>
+            <g class="arches">
+              <rect x="30" y="214" width="46" height="62" rx="23" fill="url(#gHallW)"/>
+              <rect x="90" y="214" width="46" height="62" rx="23" fill="url(#gHallW)"/>
+              <rect x="150" y="214" width="46" height="62" rx="23" fill="url(#gHallW)"/>
+              <rect x="206" y="214" width="34" height="62" rx="17" fill="url(#gHallW)"/>
             </g>
+            <rect x="0" y="236" width="340" height="7" fill="#232d3b"/>
+            <rect x="0" y="243" width="340" height="2" fill="#0b1018"/>
+            <rect x="262" y="243" width="4" height="69" fill="#2a3544"/>
+            <rect x="320" y="243" width="4" height="69" fill="#2a3544"/>
           </g>
 
-          <g id="toolR2" class="tool" transform="translate(505,215)">
-            <ellipse class="lockring" cx="0" cy="0" rx="50" ry="9"/>
-            <rect class="ped" x="-42" y="0" width="84" height="47" rx="4"/>
-            <rect x="-42" y="0" width="84" height="5" rx="2" fill="#7a8aa0" opacity=".5"/>
-            <text class="plate-name" x="0" y="21" text-anchor="middle">R2 &#183; SPRAYER</text>
-            <text id="plateR2" class="plate-stat free" x="0" y="39" text-anchor="middle">FREE</text>
-            <rect x="14" y="-6" width="42" height="6" rx="1" fill="#586578"/>
-            <polygon class="spraycone" points="34,-28 14,-3 56,-3"/>
-            <rect x="-16" y="-62" width="32" height="56" rx="9" fill="url(#gMetal)" stroke="#1a2028"/>
-            <rect x="-8" y="-72" width="16" height="10" rx="2" fill="#7a8aa0" stroke="#1a2028"/>
-            <rect x="-16" y="-42" width="32" height="10" fill="#ff8a1f" opacity=".85"/>
-            <rect x="16" y="-44" width="18" height="7" rx="2" fill="#8fa0b4" stroke="#1a2028"/>
-            <polygon points="29,-38 39,-38 36,-28 32,-28" fill="#c8d2de" stroke="#1a2028"/>
-            <g transform="translate(34,-26)">
-              <circle class="drop d1" r="2"/><circle class="drop d2" r="2"/><circle class="drop d3" r="1.6"/>
-              <circle class="drop d4" r="2"/><circle class="drop d5" r="1.6"/>
-            </g>
+          <!-- ============ EAST TERMINAL (right station) ============ -->
+          <g id="stE">
+            <rect x="1146" y="140" width="240" height="174" fill="#121c2b" stroke="#2b3644" stroke-width="2"/>
+            <g id="glassE"></g>
+            <rect x="1340" y="86" width="30" height="56" fill="#0e1622" stroke="#2b3644" stroke-width="2"/>
+            <line x1="1355" y1="86" x2="1355" y2="56" stroke="#5a6a80" stroke-width="2"/>
+            <circle class="beacon" cx="1355" cy="54" r="3.5"/>
+            <rect x="1176" y="112" width="156" height="24" rx="3" fill="#06101c" stroke="#2d9cff" stroke-width="2"/>
+            <text x="1254" y="130" text-anchor="middle" class="sign-t sign-b">EAST TERMINAL</text>
+            <rect x="1166" y="146" width="178" height="38" rx="3" fill="#05080d" stroke="#3a4452"/>
+            <text id="dbEt1" x="1176" y="162" class="db-t">202 FREIGHT &#183; WESTBOUND</text>
+            <text id="dbEt2" x="1176" y="178" class="db-s">ON TIME</text>
+            <circle cx="1170" cy="200" r="0" fill="none"/>
+            <circle cx="1362" cy="170" r="13" fill="#0a0f16" stroke="#7cc4ff" stroke-width="2"/>
+            <line id="clockEh" x1="1362" y1="170" x2="1362" y2="162" class="hand"/>
+            <line id="clockEm" x1="1362" y1="170" x2="1362" y2="159" class="hand thin"/>
+            <rect x="1060" y="236" width="340" height="7" fill="#232d3b"/>
+            <rect x="1060" y="243" width="340" height="2" fill="#0b1018"/>
+            <rect x="1076" y="243" width="4" height="69" fill="#2a3544"/>
+            <rect x="1134" y="243" width="4" height="69" fill="#2a3544"/>
           </g>
 
-          <g id="robotP1" class="robot idle"></g>
-          <g id="robotP2" class="robot idle"></g>
+          <!-- platforms -->
+          <rect x="0" y="312" width="330" height="20" fill="url(#gPlat)"/>
+          <rect x="0" y="312" width="330" height="3" fill="#e8c24a"/>
+          <rect x="1070" y="312" width="330" height="20" fill="url(#gPlat)"/>
+          <rect x="1070" y="312" width="330" height="3" fill="#e8c24a"/>
+          <g id="lamps"></g>
 
-          <rect class="vig" width="900" height="340" fill="url(#gVig)" pointer-events="none"/>
-          <g class="alert" transform="translate(450,38)">
-            <rect x="-112" y="-21" width="224" height="42" rx="7" fill="#2a0f0c" stroke="#ff4b3a" stroke-width="2"/>
-            <path d="M-94 11 L-81 -12 L-68 11 Z" fill="#ff4b3a"/>
-            <text x="-81" y="8" text-anchor="middle" class="alert-bang">!</text>
-            <text x="12" y="8" text-anchor="middle" class="alert-t">DEADLOCK</text>
+          <!-- catenary + signal bridge (behind trains) -->
+          <g id="pylons"></g>
+          <g id="wires"></g>
+          <g id="bridge">
+            <rect x="660" y="146" width="6" height="188" fill="#2a3544"/>
+            <rect x="734" y="146" width="6" height="188" fill="#2a3544"/>
+            <rect x="652" y="142" width="96" height="9" rx="2" fill="#344154"/>
+            <rect x="652" y="142" width="96" height="2" fill="#6b7d95" opacity=".6"/>
+            <g id="bridgeHeads"></g>
           </g>
+
+          <rect id="dawn" class="dawn" width="1400" height="336" fill="url(#gDawn)"/>
+
+          <!-- ============ GROUND & TRACKS ============ -->
+          <rect y="332" width="1400" height="188" fill="url(#gGround)"/>
+          <!-- main line -->
+          <rect y="334" width="1400" height="20" fill="url(#gBallast)"/>
+          <rect y="334" width="1400" height="20" fill="url(#pGravel)" opacity=".6"/>
+          <rect y="337" width="1400" height="12" fill="url(#pSleeper)"/>
+          <rect y="330" width="1400" height="5" fill="url(#gRail)"/>
+          <rect y="329" width="1400" height="1.2" fill="#fff" opacity=".5"/>
+          <!-- track circuits (block occupancy lights) -->
+          <rect id="blkA" class="blk free" x="330" y="352" width="370" height="5" rx="2.5"/>
+          <rect id="blkB" class="blk free" x="700" y="352" width="370" height="5" rx="2.5"/>
+          <!-- sidings (depot lanes) -->
+          <rect x="0" y="418" width="330" height="20" fill="url(#gBallast)"/>
+          <rect x="0" y="418" width="330" height="20" fill="url(#pGravel)" opacity=".6"/>
+          <rect x="0" y="421" width="330" height="12" fill="url(#pSleeper)"/>
+          <rect x="0" y="414" width="330" height="5" fill="url(#gRail)"/>
+          <rect x="1070" y="418" width="330" height="20" fill="url(#gBallast)"/>
+          <rect x="1070" y="418" width="330" height="20" fill="url(#pGravel)" opacity=".6"/>
+          <rect x="1070" y="421" width="330" height="12" fill="url(#pSleeper)"/>
+          <rect x="1070" y="414" width="330" height="5" fill="url(#gRail)"/>
+          <rect x="324" y="410" width="10" height="28" rx="2" fill="#10151c" stroke="#ff4b3a" stroke-width="2"/>
+          <rect x="1066" y="410" width="10" height="28" rx="2" fill="#10151c" stroke="#ff4b3a" stroke-width="2"/>
+          <!-- transfer tables -->
+          <g id="tvW" class="tv"><rect x="10" y="338" width="312" height="102" rx="6"/><text x="166" y="456" text-anchor="middle">TRANSFER TABLE &middot; DEPOT</text></g>
+          <g id="tvE" class="tv"><rect x="1078" y="338" width="312" height="102" rx="6"/><text x="1234" y="456" text-anchor="middle">TRANSFER TABLE &middot; DEPOT</text></g>
+          <!-- block boundary + labels -->
+          <line x1="700" y1="334" x2="700" y2="440" class="boundary"/>
+          <g class="plate">
+            <rect x="372" y="372" width="286" height="52" rx="7"/>
+            <rect x="742" y="372" width="286" height="52" rx="7"/>
+          </g>
+          <text id="lblA" x="515" y="394" text-anchor="middle" class="lbl">BLOCK A &middot; R1</text>
+          <text id="lblAs" x="515" y="414" text-anchor="middle" class="lbl-s">FREE</text>
+          <text id="lblB" x="885" y="394" text-anchor="middle" class="lbl">BLOCK B &middot; R2</text>
+          <text id="lblBs" x="885" y="414" text-anchor="middle" class="lbl-s">FREE</text>
+          <g id="ripples"></g>
+
+          <!-- ============ TRAINS ============ -->
+          <g id="reflLayer" mask="url(#mRefl)">
+            <use id="reflP1" href="#trainP1" opacity=".2"/>
+            <use id="reflP2" href="#trainP2" opacity=".2"/>
+          </g>
+          <g id="trainLayer">
+            <g id="trainP1" class="train idle"></g>
+            <g id="trainP2" class="train idle"></g>
+          </g>
+          <g id="fx"></g>
+          <g id="fgSignals"></g>
+
+          <!-- weather & mood -->
+          <rect y="430" width="1400" height="90" fill="url(#gFog)"/>
+          <g id="rain" class="rain"></g>
+          <rect class="vig" width="1400" height="520" fill="url(#gVig)" pointer-events="none"/>
+          <g id="dz" class="dz">
+            <circle cx="700" cy="296" r="24" class="dz-ring"/>
+            <rect x="574" y="222" width="252" height="22" rx="11" fill="#2a0f0c" stroke="#ff4b3a" stroke-width="1.5"/>
+            <text x="700" y="238" text-anchor="middle" class="dz-t">HEAD-ON STANDOFF</text>
+          </g>
+          <rect id="flash" class="flash" width="1400" height="520" fill="#dfeaff"/>
+          <polyline class="bolt" points="1010,0 985,60 1008,64 972,150 1004,152 960,250"/>
+          <g class="alert" transform="translate(700,46)">
+            <rect x="-150" y="-24" width="300" height="48" rx="8" fill="#2a0f0c" stroke="#ff4b3a" stroke-width="2.5"/>
+            <path d="M-130 12 L-116 -13 L-102 12 Z" fill="#ff4b3a"/>
+            <text x="-116" y="9" text-anchor="middle" class="alert-bang">!</text>
+            <text x="18" y="9" text-anchor="middle" class="alert-t">DEADLOCK</text>
+          </g>
+        </svg>
+      </div>
+
+      <!-- dispatcher control board -->
+      <div class="ctc-wrap">
+        <div class="ctc-title">Dispatcher control board <small>Track-circuit diagram</small></div>
+        <svg id="ctc" class="ctc" viewBox="0 0 1400 112" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dispatcher track diagram">
+          <rect width="1400" height="112" fill="#070b10"/>
+          <rect x="0" y="24" width="330" height="30" class="ctc-st"/><text x="165" y="44" text-anchor="middle" class="ctc-lab">WEST CENTRAL</text>
+          <rect id="ctcA" x="330" y="24" width="370" height="30" class="ctc-blk free"/><text x="515" y="44" text-anchor="middle" class="ctc-lab">BLOCK A &middot; R1</text>
+          <rect id="ctcB" x="700" y="24" width="370" height="30" class="ctc-blk free"/><text x="885" y="44" text-anchor="middle" class="ctc-lab">BLOCK B &middot; R2</text>
+          <rect x="1070" y="24" width="330" height="30" class="ctc-st"/><text x="1235" y="44" text-anchor="middle" class="ctc-lab">EAST TERMINAL</text>
+          <rect x="0" y="66" width="330" height="14" class="ctc-dep"/><rect x="1070" y="66" width="330" height="14" class="ctc-dep"/>
+          <text x="165" y="77" text-anchor="middle" class="ctc-small">DEPOT SIDING</text><text x="1235" y="77" text-anchor="middle" class="ctc-small">DEPOT SIDING</text>
+          <circle id="ctcS0" class="ctc-sig r" cx="330" cy="14" r="6"/>
+          <circle id="ctcS1a" class="ctc-sig r" cx="690" cy="14" r="6"/>
+          <circle id="ctcS1b" class="ctc-sig r" cx="710" cy="14" r="6"/>
+          <circle id="ctcS2" class="ctc-sig r" cx="1070" cy="14" r="6"/>
+          <g id="ctcP1" class="ctc-tr"><rect width="272" height="18" rx="4" fill="#2d9cff"/><text x="136" y="13" text-anchor="middle">P1 &middot; EXPRESS 101</text></g>
+          <g id="ctcP2" class="ctc-tr"><rect width="272" height="18" rx="4" fill="#ff8a1f"/><text x="136" y="13" text-anchor="middle">P2 &middot; FREIGHT 202</text></g>
         </svg>
       </div>
 
       <div class="chips">
         <div id="cardP1" class="chip machine">
-          <div class="chip-top"><span class="chip-name">P1</span><span class="chip-role">Assembly Robot</span></div>
+          <div class="chip-top"><span class="chip-name">P1</span><span class="chip-role">Express 101 &middot; passenger</span></div>
           <div id="statusP1" class="chip-status">IDLE</div>
           <div class="bar"><div id="barP1" class="bar-fill"></div></div>
         </div>
         <div id="cardP2" class="chip machine">
-          <div class="chip-top"><span class="chip-name">P2</span><span class="chip-role">Packaging Robot</span></div>
+          <div class="chip-top"><span class="chip-name">P2</span><span class="chip-role">Freight 202 &middot; goods</span></div>
           <div id="statusP2" class="chip-status">IDLE</div>
           <div class="bar"><div id="barP2" class="bar-fill"></div></div>
         </div>
         <div id="cardR1" class="chip resource">
-          <div class="chip-top"><span class="chip-name">R1</span><span class="chip-role">Welding Tool</span></div>
+          <div class="chip-top"><span class="chip-name">R1</span><span class="chip-role">Track Block A &middot; west</span></div>
           <div id="statusR1" class="chip-status">FREE</div>
         </div>
         <div id="cardR2" class="chip resource">
-          <div class="chip-top"><span class="chip-name">R2</span><span class="chip-role">Paint Sprayer</span></div>
+          <div class="chip-top"><span class="chip-name">R2</span><span class="chip-role">Track Block B &middot; east</span></div>
           <div id="statusR2" class="chip-status">FREE</div>
         </div>
       </div>
-      <p class="hint">Each robot needs <b>both</b> tools to finish its job. P1 takes R1 then asks for R2. P2 takes R2 then asks for R1. Blue cables = tool allocated. Reaching arm = tool requested.</p>
+      <p class="hint">Each train must pass through <b>both</b> blocks to reach its destination. P1 (Express 101, eastbound) enters Block A and then needs Block B. P2 (Freight 202, westbound) enters Block B and then needs Block A. Orange glow on the track = block occupied. A red signal = train must stop.</p>
     </section>
 
+    <!-- ================= RESOURCE ALLOCATION GRAPH ================= -->
     <section class="panel">
       <h2>Resource Allocation Graph</h2>
       <svg id="rag" class="rag" viewBox="0 0 460 340" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <marker id="arrowBlue" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="13" markerHeight="13" markerUnits="userSpaceOnUse" orient="auto">
-            <path d="M0,0 L12,6 L0,12 z" fill="#2d9cff"></path>
-          </marker>
-          <marker id="arrowOrange" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="13" markerHeight="13" markerUnits="userSpaceOnUse" orient="auto">
-            <path d="M0,0 L12,6 L0,12 z" fill="#ff8a1f"></path>
-          </marker>
-          <marker id="arrowRed" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="13" markerHeight="13" markerUnits="userSpaceOnUse" orient="auto">
-            <path d="M0,0 L12,6 L0,12 z" fill="#ff4b3a"></path>
-          </marker>
+          <marker id="arrowBlue" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="13" markerHeight="13" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#2d9cff"></path></marker>
+          <marker id="arrowOrange" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="13" markerHeight="13" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#ff8a1f"></path></marker>
+          <marker id="arrowRed" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="13" markerHeight="13" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#ff4b3a"></path></marker>
           <radialGradient id="gProc" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#2f4d70"/><stop offset="1" stop-color="#16212e"/></radialGradient>
           <radialGradient id="gRes" cx="35%" cy="30%" r="90%"><stop offset="0" stop-color="#5a3c1d"/><stop offset="1" stop-color="#241a10"/></radialGradient>
           <filter id="ragGlow" filterUnits="userSpaceOnUse" x="-50" y="-50" width="560" height="440"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
           <pattern id="ragGrid" width="23" height="23" patternUnits="userSpaceOnUse"><path d="M23 0H0V23" fill="none" stroke="#fff" stroke-opacity=".035"/></pattern>
         </defs>
         <rect width="460" height="340" fill="url(#ragGrid)"/>
-
         <g class="rag-center">
           <circle class="rc-ring" cx="230" cy="170" r="46"/>
           <text x="230" y="167" text-anchor="middle">CIRCULAR</text>
           <text x="230" y="183" text-anchor="middle">WAIT</text>
         </g>
-
         <g id="edges"></g>
-
         <g id="nodeP1" class="node proc">
           <circle cx="100" cy="92" r="34"></circle>
           <text x="100" y="99" class="n-t">P1</text>
-          <text x="100" y="48" class="n-s">Assembly Robot</text>
+          <text x="100" y="48" class="n-s">Express 101</text>
         </g>
         <g id="nodeP2" class="node proc">
           <circle cx="360" cy="248" r="34"></circle>
           <text x="360" y="255" class="n-t">P2</text>
-          <text x="360" y="298" class="n-s">Packaging Robot</text>
+          <text x="360" y="298" class="n-s">Freight 202</text>
         </g>
         <g id="nodeR1" class="node res">
           <rect x="66" y="218" width="68" height="60" rx="8"></rect>
           <text x="100" y="243" class="n-t">R1</text>
           <circle cx="100" cy="262" r="5" class="n-dot"></circle>
-          <text x="100" y="298" class="n-s">Welding Tool</text>
+          <text x="100" y="298" class="n-s">Track Block A</text>
         </g>
         <g id="nodeR2" class="node res">
           <rect x="326" y="62" width="68" height="60" rx="8"></rect>
           <text x="360" y="87" class="n-t">R2</text>
           <circle cx="360" cy="106" r="5" class="n-dot"></circle>
-          <text x="360" y="54" class="n-s">Paint Sprayer</text>
+          <text x="360" y="54" class="n-s">Track Block B</text>
         </g>
       </svg>
       <div class="legend">
-        <span><i class="sw sw-circle"></i> Process</span>
-        <span><i class="sw sw-square"></i> Resource</span>
-        <span><i class="sw sw-blue"></i> Resource &rarr; Process (allocated)</span>
-        <span><i class="sw sw-orange"></i> Process &rarr; Resource (requesting)</span>
+        <span><i class="sw sw-circle"></i> Process (train)</span>
+        <span><i class="sw sw-square"></i> Resource (track block)</span>
+        <span><i class="sw sw-blue"></i> Block &rarr; Train (allocated)</span>
+        <span><i class="sw sw-orange"></i> Train &rarr; Block (requesting)</span>
       </div>
     </section>
 
+    <!-- ================= FOUR CONDITIONS ================= -->
     <section class="panel">
       <h2>Four Conditions for Deadlock</h2>
       <div class="cond-meter"><div class="meter"><i id="condFill"></i></div><span id="condCount">0 / 4 conditions met</span></div>
@@ -339,45 +410,47 @@
         <div class="cond-no">1</div>
         <div class="cond-main">
           <div class="cond-head"><b>Mutual Exclusion</b><span class="tag"></span></div>
-          <p>A resource can be used by only one process at a time. Only one robot can use the welding tool or the paint sprayer.</p>
+          <p>A track block can hold only one train at a time. Two trains can never occupy Block A or Block B together.</p>
         </div>
       </div>
       <div id="cond2" class="cond">
         <div class="cond-no">2</div>
         <div class="cond-main">
           <div class="cond-head"><b>Hold and Wait</b><span class="tag"></span></div>
-          <p>A process holds one resource while waiting for another. P1 holds R1 and waits for R2; P2 holds R2 and waits for R1.</p>
+          <p>A train keeps its current block while waiting for the next one. P1 holds Block A and waits for Block B; P2 holds Block B and waits for Block A.</p>
         </div>
       </div>
       <div id="cond3" class="cond">
         <div class="cond-no">3</div>
         <div class="cond-main">
           <div class="cond-head"><b>No Preemption</b><span class="tag"></span></div>
-          <p>A resource cannot be forcibly taken away. It is released only when its process finishes with it.</p>
+          <p>A block cannot be forcibly taken from a train. It is released only when the train clears it.</p>
         </div>
       </div>
       <div id="cond4" class="cond">
         <div class="cond-no">4</div>
         <div class="cond-main">
           <div class="cond-head"><b>Circular Wait</b><span class="tag"></span></div>
-          <p>Processes wait in a cycle: P1 &rarr; R2 &rarr; P2 &rarr; R1 &rarr; P1. Nobody can move.</p>
+          <p>P1 &rarr; Block B (R2) &rarr; P2 &rarr; Block A (R1) &rarr; P1. Each train waits for the other, so nobody can move.</p>
         </div>
       </div>
     </section>
 
+    <!-- ================= EVENT LOG ================= -->
     <section class="panel">
       <h2>Event Log</h2>
       <ul id="log" class="log"></ul>
     </section>
 
+    <!-- ================= RECOVERY ================= -->
     <section class="panel">
       <h2>Recovery Method</h2>
       <div id="recoveryNote" class="recovery-note"></div>
       <ul class="how">
         <li><b>Detect</b> a cycle in the wait-for graph (P1 waits for P2, P2 waits for P1).</li>
-        <li><b>Choose</b> a victim process to terminate, or a resource to preempt.</li>
+        <li><b>Choose</b> a victim train to terminate, or a block to preempt.</li>
         <li><b>Break</b> one of the four conditions: Circular Wait or No Preemption.</li>
-        <li><b>Resume</b> normal factory operation.</li>
+        <li><b>Resume</b> normal train operation.</li>
       </ul>
     </section>
 
@@ -386,7 +459,7 @@
   <footer>
     <div class="foot-name">Created by <b>Nishad Patil</b></div>
     <div>Int. B.Tech &middot; TY CSE B &middot; Roll No. 41 &middot; PRN No. 1262241550 &middot; Subject: Operating System</div>
-    <div class="foot-small">Deadlock Simulation &middot; HTML, CSS and JavaScript only &middot; works offline</div>
+    <div class="foot-small">Railway Deadlock Simulation &middot; Transportation &amp; Rail Systems &middot; HTML, CSS and JavaScript only &middot; works offline</div>
   </footer>
 
 </div>

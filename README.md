@@ -1,31 +1,32 @@
-# Deadlock Simulation: Automated Factory Resource Management
+# Railway Deadlock Simulation: Transportation & Rail Systems
 
 **Created by:** Nishad Patil
 **Class:** Int. B.Tech, TY CSE B
 **Roll No.:** 41
 **PRN No.:** 1262241550
 **Subject:** Operating System (LCA)
+**Industrial application:** Transportation & Rail Systems
 
 ---
 
 ## 1. About the Project
 
-This project shows how a **deadlock** happens in an Operating System, using an automated factory as the real-world example.
+This project shows how a **deadlock** happens in an Operating System, using a **single-track railway with block signalling** as the real-world example.
 
-Two robots (processes) need two shared tools (resources) to finish their jobs:
+The track is split into two **signal blocks**. A block can hold only one train at a time, exactly like a resource that only one process can use at a time.
 
-| OS term | Factory meaning |
+| OS term | Railway meaning |
 |---------|-----------------|
-| P1 | Assembly Robot |
-| P2 | Packaging Robot |
-| R1 | Welding Tool |
-| R2 | Paint Sprayer |
+| P1 | Express 101, a passenger train travelling east |
+| P2 | Freight 202, a goods train travelling west |
+| R1 | Track Block A (west section) |
+| R2 | Track Block B (east section) |
 
-Each tool can be used by only one robot at a time. If the robots grab the tools in the wrong order, both get stuck forever. That is a deadlock.
+Both trains must pass through **both** blocks to reach their destination.
 
 ## 2. How to Run
 
-1. Keep these three files in the **same folder**:
+1. Keep these files in the **same folder** (use a different folder from the factory version):
    - `index.html`
    - `style.css`
    - `script.js`
@@ -38,43 +39,51 @@ No installation, server, internet, database, API or framework is needed. It work
 | Button | What it does |
 |--------|--------------|
 | **Start** | Starts the simulation, or continues it after a pause |
-| **Pause** | Freezes the simulation |
+| **Pause** | Freezes the simulation, including the trains |
 | **Reset** | Returns everything to the beginning |
-| **Recovery method** (dropdown) | Chooses how to fix the deadlock (see section 5) |
+| **Recovery method** (dropdown) | Chooses how the dispatcher fixes the deadlock (see section 5) |
 | **Recover** | Becomes active only after deadlock is detected, then applies the chosen method |
 
 ## 4. What Happens in the Simulation
 
-1. P1 requests R1 and P2 requests R2.
-2. P1 acquires R1 and P2 acquires R2. Both start working.
-3. P1 now requests R2, which P2 holds. P2 now requests R1, which P1 holds.
-4. Both processes are **BLOCKED**. The system detects a cycle and shows **DEADLOCK DETECTED**.
-5. Choose a recovery method and press **Recover**. The system recovers and the work completes.
+1. P1 requests Block A and P2 requests Block B.
+2. P1 enters Block A and P2 enters Block B. Their signals turn green.
+3. P1 now needs Block B, which P2 holds. P2 now needs Block A, which P1 holds.
+4. Both trains stop **nose-to-nose** at red signals and are **BLOCKED**. The system detects a cycle and shows **DEADLOCK DETECTED** (lightning flash, red alarm, flashing signals).
+5. Choose a recovery method and press **Recover**. The system recovers, the storm clears and dawn breaks.
 
-The step tracker near the top follows these stages: Request, Acquire, Work, Cross-request, Deadlock, Recovery.
+The step tracker near the top follows these stages: Request, Enter block, Run, Request next, Deadlock, Recovery.
 
 ## 5. Recovery Methods
 
 | Option | What it does | Condition broken |
 |--------|--------------|------------------|
-| **Auto (system chooses)** | Terminates the process that has done less work. If equal, P2 is chosen. | Circular Wait |
-| **Terminate P1** | P1 is killed and releases R1. P2 gets R1 and finishes. | Circular Wait |
-| **Terminate P2** | P2 is killed and releases R2. P1 gets R2 and finishes. | Circular Wait |
-| **Preempt R1 from P1** | R1 is forcibly taken from P1 (P1 rolls back) and given to P2. P2 finishes, then P1 restarts and finishes. | No Preemption |
-| **Preempt R2 from P2** | R2 is forcibly taken from P2 (P2 rolls back) and given to P1. P1 finishes, then P2 restarts and finishes. | No Preemption |
+| **Auto (dispatcher chooses)** | Terminates the train that has made less progress. If equal, P2 is chosen. | Circular Wait |
+| **Terminate P1** | Express 101 is withdrawn from service and releases Block A. Freight 202 gets Block A and finishes. | Circular Wait |
+| **Terminate P2** | Freight 202 is withdrawn from service and releases Block B. Express 101 gets Block B and finishes. | Circular Wait |
+| **Preempt Block A from P1** | Block A is forcibly taken from Express 101. The train reverses to the depot (rolled back) and Freight 202 passes. Then Express 101 restarts and also finishes. | No Preemption |
+| **Preempt Block B from P2** | Block B is forcibly taken from Freight 202. The train reverses to the depot (rolled back) and Express 101 passes. Then Freight 202 restarts and also finishes. | No Preemption |
+
+**Terminate:** the train dissolves from the line (process killed, resources freed).
+**Preempt:** the train reverses to its depot, is moved sideways onto a siding by a **transfer table**, waits, then restarts (process rolled back and restarted).
 
 ## 6. The Four Deadlock Conditions
 
 All four must be true at the same time for a deadlock. The dashboard lights each one up when it becomes true.
 
-1. **Mutual Exclusion:** only one process can use a resource at a time.
-2. **Hold and Wait:** a process holds one resource while waiting for another.
-3. **No Preemption:** a resource cannot be forcibly taken from a process.
-4. **Circular Wait:** processes wait for each other in a cycle (P1 → R2 → P2 → R1 → P1).
+1. **Mutual Exclusion:** a track block can hold only one train at a time.
+2. **Hold and Wait:** a train keeps its current block while waiting for the next one.
+3. **No Preemption:** a block cannot be forcibly taken from a train.
+4. **Circular Wait:** P1 waits for P2 and P2 waits for P1 (P1 → R2 → P2 → R1 → P1).
 
 ## 7. Dashboard Guide
 
-- **Factory Floor:** animated scene. Blue cables mean a tool is allocated to a robot. A robot arm reaching for a tool means it is requesting it. At deadlock the arms cross and tremble, the cables turn red and the conveyor stops.
+- **Railway Line:** animated night scene.
+  - Orange glow under the track = block occupied. Green = free. Red = deadlock.
+  - Signals: green = train may proceed, amber = request pending, red = train must stop.
+  - Station boards show each train's status (ON TIME, DEPARTED, HELD AT SIGNAL, CANCELLED, ARRIVED).
+  - Trains have working wheels, headlights, pantograph sparks and diesel smoke, and reflect in the wet rails.
+- **Dispatcher control board:** a real-style track-circuit diagram showing the two blocks, the signals and the train positions.
 - **Resource Allocation Graph (RAG):**
   - Circle = process, square = resource.
   - Blue solid arrow (Resource → Process) = allocated.
@@ -86,15 +95,15 @@ All four must be true at the same time for a deadlock. The dashboard lights each
 
 ## 8. How Deadlock Detection Works
 
-The code builds a **wait-for graph**: process A points to process B if A is waiting for a resource that B holds. If following these arrows leads back to the starting process, a cycle exists and the system declares a deadlock. This is the `findCycle()` function in `script.js`.
+The code builds a **wait-for graph**: process A points to process B if A is waiting for a block that B holds. If following these arrows leads back to the starting process, a cycle exists and the system declares a deadlock. This is the `findCycle()` function in `script.js`.
 
 ## 9. Files
 
 | File | Purpose |
 |------|---------|
-| `index.html` | Page structure, factory scene and graph (SVG), panels |
+| `index.html` | Page structure, railway scene and graph (SVG), panels |
 | `style.css` | Dark industrial theme (blue and orange), layout and animations |
-| `script.js` | Simulation logic, deadlock detection, recovery methods, drawing and animation |
+| `script.js` | Simulation logic, deadlock detection, recovery methods, train and scene animation |
 
 To change the simulation speed, edit `STEP_DELAY` at the top of `script.js` (default 2000 ms per step).
 
@@ -105,6 +114,7 @@ HTML, CSS and JavaScript only. No backend, database, APIs, libraries or framewor
 ## 11. Quick Viva Answers
 
 - **What is deadlock?** A situation where processes wait for each other forever and none can proceed.
-- **Why does it happen here?** P1 holds R1 and needs R2, while P2 holds R2 and needs R1.
+- **Why does it happen here?** Express 101 holds Block A and needs Block B, while Freight 202 holds Block B and needs Block A.
 - **How is it detected?** By finding a cycle in the wait-for / resource allocation graph.
 - **How is it fixed?** Terminate a process (breaks Circular Wait) or preempt a resource (breaks No Preemption).
+- **Real-world example?** Trains on a single track with block signalling can lock each other out if they request blocks in opposite orders. Railways avoid this with fixed block ordering, timetables and dispatcher control.
